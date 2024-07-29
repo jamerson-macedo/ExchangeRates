@@ -11,6 +11,9 @@
 		CFDA0EAC2C57C87F00977B72 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EAB2C57C87F00977B72 /* ContentView.swift */; };
 		CFDA0EAE2C57C88000977B72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFDA0EAD2C57C88000977B72 /* Assets.xcassets */; };
 		CFDA0EB12C57C88000977B72 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFDA0EB02C57C88000977B72 /* Preview Assets.xcassets */; };
+		CFDA0EBB2C57C97D00977B72 /* RateApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EBA2C57C97D00977B72 /* RateApi.swift */; };
+		CFDA0EBD2C57CAED00977B72 /* RatesRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EBC2C57CAED00977B72 /* RatesRouter.swift */; };
+		CFDA0EC02C57CB0500977B72 /* CurrencyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EBF2C57CB0500977B72 /* CurrencyRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		CFDA0EAB2C57C87F00977B72 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CFDA0EAD2C57C88000977B72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFDA0EB02C57C88000977B72 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CFDA0EBA2C57C97D00977B72 /* RateApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateApi.swift; sourceTree = "<group>"; };
+		CFDA0EBC2C57CAED00977B72 /* RatesRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesRouter.swift; sourceTree = "<group>"; };
+		CFDA0EBF2C57CB0500977B72 /* CurrencyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +57,7 @@
 		CFDA0EA82C57C87F00977B72 /* ExchangeRates */ = {
 			isa = PBXGroup;
 			children = (
+				CFDA0EB72C57C94D00977B72 /* DataProviders */,
 				CFDA0EA92C57C87F00977B72 /* ExchangeRatesApp.swift */,
 				CFDA0EAB2C57C87F00977B72 /* ContentView.swift */,
 				CFDA0EAD2C57C88000977B72 /* Assets.xcassets */,
@@ -65,6 +72,40 @@
 				CFDA0EB02C57C88000977B72 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CFDA0EB72C57C94D00977B72 /* DataProviders */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0EB82C57C95800977B72 /* NetworkRepository */,
+			);
+			path = DataProviders;
+			sourceTree = "<group>";
+		};
+		CFDA0EB82C57C95800977B72 /* NetworkRepository */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0EBE2C57CAF400977B72 /* Routes */,
+				CFDA0EB92C57C96A00977B72 /* api */,
+			);
+			path = NetworkRepository;
+			sourceTree = "<group>";
+		};
+		CFDA0EB92C57C96A00977B72 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0EBA2C57C97D00977B72 /* RateApi.swift */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		CFDA0EBE2C57CAF400977B72 /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0EBC2C57CAED00977B72 /* RatesRouter.swift */,
+				CFDA0EBF2C57CB0500977B72 /* CurrencyRouter.swift */,
+			);
+			path = Routes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +178,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDA0EC02C57CB0500977B72 /* CurrencyRouter.swift in Sources */,
+				CFDA0EBD2C57CAED00977B72 /* RatesRouter.swift in Sources */,
 				CFDA0EAC2C57C87F00977B72 /* ContentView.swift in Sources */,
+				CFDA0EBB2C57C97D00977B72 /* RateApi.swift in Sources */,
 				CFDA0EAA2C57C87F00977B72 /* ExchangeRatesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,11 +319,13 @@
 				DEVELOPMENT_TEAM = L5U287N3KD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -287,9 +333,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jamersonmacedo.ExchangeRates;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -304,11 +354,13 @@
 				DEVELOPMENT_TEAM = L5U287N3KD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,9 +368,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jamersonmacedo.ExchangeRates;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
