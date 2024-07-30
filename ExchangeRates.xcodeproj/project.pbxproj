@@ -20,6 +20,10 @@
 		CFDA0ECA2C590D1C00977B72 /* RatesHistoricalObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EC92C590D1C00977B72 /* RatesHistoricalObject.swift */; };
 		CFDA0ECC2C59131500977B72 /* RateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ECB2C59131500977B72 /* RateStore.swift */; };
 		CFDA0ECE2C5915FB00977B72 /* CurrencyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ECD2C5915FB00977B72 /* CurrencyStore.swift */; };
+		CFDA0ED12C59172B00977B72 /* DataProviderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ED02C59172B00977B72 /* DataProviderManager.swift */; };
+		CFDA0ED42C59183000977B72 /* RatesFluctuactionDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ED32C59183000977B72 /* RatesFluctuactionDataProvider.swift */; };
+		CFDA0ED62C59195F00977B72 /* RatesHistoricalDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ED52C59195F00977B72 /* RatesHistoricalDataProvider.swift */; };
+		CFDA0ED92C591A2A00977B72 /* CurrencySymbolsDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0ED82C591A2A00977B72 /* CurrencySymbolsDataProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +41,10 @@
 		CFDA0EC92C590D1C00977B72 /* RatesHistoricalObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesHistoricalObject.swift; sourceTree = "<group>"; };
 		CFDA0ECB2C59131500977B72 /* RateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateStore.swift; sourceTree = "<group>"; };
 		CFDA0ECD2C5915FB00977B72 /* CurrencyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyStore.swift; sourceTree = "<group>"; };
+		CFDA0ED02C59172B00977B72 /* DataProviderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProviderManager.swift; sourceTree = "<group>"; };
+		CFDA0ED32C59183000977B72 /* RatesFluctuactionDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesFluctuactionDataProvider.swift; sourceTree = "<group>"; };
+		CFDA0ED52C59195F00977B72 /* RatesHistoricalDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesHistoricalDataProvider.swift; sourceTree = "<group>"; };
+		CFDA0ED82C591A2A00977B72 /* CurrencySymbolsDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySymbolsDataProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +97,10 @@
 		CFDA0EB72C57C94D00977B72 /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
+				CFDA0ED72C591A0800977B72 /* CurrencySymbolsDataProvider */,
+				CFDA0ED22C59180C00977B72 /* RatesDataProvider */,
 				CFDA0EB82C57C95800977B72 /* NetworkRepository */,
+				CFDA0ED02C59172B00977B72 /* DataProviderManager.swift */,
 			);
 			path = DataProviders;
 			sourceTree = "<group>";
@@ -140,6 +151,23 @@
 				CFDA0EC92C590D1C00977B72 /* RatesHistoricalObject.swift */,
 			);
 			path = Objects;
+			sourceTree = "<group>";
+		};
+		CFDA0ED22C59180C00977B72 /* RatesDataProvider */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0ED32C59183000977B72 /* RatesFluctuactionDataProvider.swift */,
+				CFDA0ED52C59195F00977B72 /* RatesHistoricalDataProvider.swift */,
+			);
+			path = RatesDataProvider;
+			sourceTree = "<group>";
+		};
+		CFDA0ED72C591A0800977B72 /* CurrencySymbolsDataProvider */ = {
+			isa = PBXGroup;
+			children = (
+				CFDA0ED82C591A2A00977B72 /* CurrencySymbolsDataProvider.swift */,
+			);
+			path = CurrencySymbolsDataProvider;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,9 +245,13 @@
 				CFDA0EC32C59093B00977B72 /* BaseStore.swift in Sources */,
 				CFDA0ECA2C590D1C00977B72 /* RatesHistoricalObject.swift in Sources */,
 				CFDA0EC82C590C9100977B72 /* CurrentSymbolsObject.swift in Sources */,
+				CFDA0ED42C59183000977B72 /* RatesFluctuactionDataProvider.swift in Sources */,
+				CFDA0ED62C59195F00977B72 /* RatesHistoricalDataProvider.swift in Sources */,
 				CFDA0ECC2C59131500977B72 /* RateStore.swift in Sources */,
 				CFDA0EAC2C57C87F00977B72 /* ContentView.swift in Sources */,
 				CFDA0EBB2C57C97D00977B72 /* RateApi.swift in Sources */,
+				CFDA0ED92C591A2A00977B72 /* CurrencySymbolsDataProvider.swift in Sources */,
+				CFDA0ED12C59172B00977B72 /* DataProviderManager.swift in Sources */,
 				CFDA0EC62C590A8500977B72 /* RateFluctuationObject.swift in Sources */,
 				CFDA0EAA2C57C87F00977B72 /* ExchangeRatesApp.swift in Sources */,
 				CFDA0ECE2C5915FB00977B72 /* CurrencyStore.swift in Sources */,
