@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Fluctuation :Identifiable{
+struct Fluctuation :Identifiable,Equatable{
     let id = UUID()
     let symbol : String
     let change : Double
@@ -116,18 +116,21 @@ struct RatesFluctuationView: View {
     }
     private var ratesFluctuationListView : some View{
         List(searchResult){ fluctuation in
-            VStack{
-                HStack(alignment:.center,spacing: 8){
-                    Text("\(fluctuation.symbol) / BRL").font(.system(size: 14,weight: .medium))
+            NavigationLink (destination: RatesFluctuationDetailView(baseCurrency: "BRL", rateFluctuation: fluctuation)){
+                VStack{
+                    HStack(alignment:.center,spacing: 8){
+                        Text("\(fluctuation.symbol) / BRL").font(.system(size: 14,weight: .medium))
+                        
+                        Text(fluctuation.endRate.formater(decimalPlaces: 2)).font(.system(size:14,weight:.bold))
+                        
+                        Text(fluctuation.change.formater(decimalPlaces: 4,with: true)).font(.system(size: 14,weight: .bold)).foregroundStyle(fluctuation.change.color).frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,alignment: .trailing)
+                        
+                        Text("(\(fluctuation.changePct.toPercentage()))").font(.system(size: 14,weight: .bold))
+                            .foregroundStyle(fluctuation.changePct.color)
+                    }
+                    Divider().padding(.leading,-20).padding(.trailing,-40)
                     
-                    Text(fluctuation.endRate.formater(decimalPlaces: 2)).font(.system(size:14,weight:.bold))
-                    
-                    Text(fluctuation.change.formater(decimalPlaces: 4,with: true)).font(.system(size: 14,weight: .bold)).foregroundStyle(fluctuation.change.color).frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/,alignment: .trailing)
-                    
-                    Text("(\(fluctuation.changePct.toPercentage()))").font(.system(size: 14,weight: .bold))
-                        .foregroundStyle(fluctuation.changePct.color)
                 }
-                Divider().padding(.leading,-20).padding(.trailing,-40)
                 
             }.listRowSeparator(.hidden)
                 .listRowBackground(Color.white)
