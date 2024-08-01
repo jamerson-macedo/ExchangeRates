@@ -26,6 +26,9 @@ class FluctuationViewModel : ObservableObject{
 struct RatesFluctuationView: View {
     @StateObject var viewmodel = FluctuationViewModel()
     @State private var searchText = ""
+    
+    @State private var isPresented = false
+    @State private var filtersPresented = false
     var searchResult : [Fluctuation]{
         if searchText.isEmpty{
             return viewmodel.fluctuation
@@ -45,22 +48,26 @@ struct RatesFluctuationView: View {
                 ratesFluctuationListView
                 
             }
-            .searchable(text: $searchText)
+                        .searchable(text: $searchText)
             .navigationTitle("Conversão de moedas")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
-                    print("Filtrar moedas")
+                    filtersPresented.toggle()
                 }, label: {
                     Image(systemName: "slider.horizontal.3")
                 })
+            }.fullScreenCover(isPresented: $filtersPresented){
+                CurrencySelectionFilterView()
             }
+
         }
     }
     private var CurrencyTimeFilterView : some View{
         HStack(alignment:.center,spacing: 16){
             Button(action: {
-                print("Filtrar moeda")
+                isPresented.toggle()
+
             }, label: {
                 Text("BRL").font(.system(size: 14,weight: .bold)).padding(.init(top: 4, leading: 9, bottom: 4, trailing: 8))
                     .foregroundColor(.white)
@@ -68,7 +75,11 @@ struct RatesFluctuationView: View {
                         RoundedRectangle(cornerRadius: 8).stroke(.white,lineWidth: 1)
                     }
             }
-            ).background(Color(UIColor.lightGray))
+            )
+            .fullScreenCover(isPresented:$isPresented){
+                BaseCurrencyFilterView()
+            }
+            .background(Color(UIColor.lightGray))
                 .cornerRadius(8)
             
             Button(action: {
