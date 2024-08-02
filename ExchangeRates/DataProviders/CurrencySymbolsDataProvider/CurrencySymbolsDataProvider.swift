@@ -7,9 +7,9 @@
 
 import Foundation
 protocol CurrencySymbolsDataProviderDelegate : DataProviderManagerDelegate{
-    func success(model:CurrentSymbolsObject)
+    func success(model:[CurrencySymbolModel])
 }
-class CurrencySymbolsDataProvider : DataProviderManager<CurrencySymbolsDataProviderDelegate, CurrentSymbolsObject>{
+class CurrencySymbolsDataProvider : DataProviderManager<CurrencySymbolsDataProviderDelegate, [CurrencySymbolModel]>{
     private let currencyStore : CurrencyStore
     init(currencyStore: CurrencyStore = CurrencyStore()) {
         self.currencyStore = currencyStore
@@ -18,7 +18,10 @@ class CurrencySymbolsDataProvider : DataProviderManager<CurrencySymbolsDataProvi
         Task.init{
             do {
                 let model = try await currencyStore.fetchSymbols()
-                delegate?.success(model: model)
+                delegate?.success(model: model.map({(key,value) -> CurrencySymbolModel in
+                    return CurrencySymbolModel(symbol: key, fullname: value)
+                    
+                }))
             }catch{
                 delegate?.errorData(delegate, error: error)
             }

@@ -7,20 +7,15 @@
 
 import SwiftUI
 import Charts
-struct ChartComparation :Identifiable,Equatable{
-    let id = UUID()
-    let symbol : String
-    let period : Date
-    let endRate : Double
-    
-}
+
+
 
 class RateFluctuationViewModel : ObservableObject{
-    @Published var fluctuation : [Fluctuation] = [Fluctuation(symbol: "USD", change: 0.0008, changePct: 0.4175, endRate: 0.18857),
-                                                  Fluctuation(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353)
+    @Published var fluctuation : [RateFluctuationModel] = [RateFluctuationModel(symbol: "USD", change: 0.0008, changePct: 0.4175, endRate: 0.18857),
+                                                  RateFluctuationModel(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353)
     ]
     
-    @Published var chartComparations : [ChartComparation] = [ChartComparation(symbol: "USD", period: "2022-12-13".toDate(), endRate: 0.18857),ChartComparation(symbol: "USD", period: "2023-01-03".toDate(), endRate: 0.18957),ChartComparation(symbol: "USD", period: "2023-01-13".toDate(), endRate: 0.22857)]
+    @Published var chartComparations : [RateHistoricalModel] = [RateHistoricalModel(symbol: "USD", period: "2022-12-13".toDate(), endRate: 0.18857),RateHistoricalModel(symbol: "USD", period: "2023-01-03".toDate(), endRate: 0.18957),RateHistoricalModel(symbol: "USD", period: "2023-01-13".toDate(), endRate: 0.22857)]
     
     @Published var timeRange = TimeRangeEnum.today
     var yAxisMin:Double{
@@ -37,13 +32,13 @@ class RateFluctuationViewModel : ObservableObject{
     func xAxislabelFormatSTyle(for date:Date)->String{
         switch timeRange {
         case .today:
-            return date.toString(dateFormat: "HH:mm")
+            return date.formatter(dateFormat: "HH:mm")
         case .thisWeek, .thisMonth:
-            return date.toString(dateFormat: "dd, MMM")
+            return date.formatter(dateFormat: "dd, MMM")
         case .thisSemester:
-            return date.toString(dateFormat: "MMM")
+            return date.formatter(dateFormat: "MMM")
         case .thisYear:
-            return date.toString(dateFormat: "MMM, YYYY")
+            return date.formatter(dateFormat: "MMM, YYYY")
         }
     }
     
@@ -51,7 +46,7 @@ class RateFluctuationViewModel : ObservableObject{
 struct RatesFluctuationDetailView: View {
     @StateObject var viewmodel = RateFluctuationViewModel()
     @State var baseCurrency : String
-    @State var rateFluctuation : Fluctuation
+    @State var rateFluctuation : RateFluctuationModel
     
     @State private var isPresentedCurrencyFilter = false
     var body: some View {
@@ -203,5 +198,5 @@ struct RatesFluctuationDetailView: View {
 }
 
 #Preview {
-    RatesFluctuationDetailView(baseCurrency: "BRL", rateFluctuation: Fluctuation(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353))
+    RatesFluctuationDetailView(baseCurrency: "BRL", rateFluctuation: RateFluctuationModel(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353))
 }

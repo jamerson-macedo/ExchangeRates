@@ -8,30 +8,23 @@
 import SwiftUI
 
 
-struct Symbol : Identifiable,Equatable{
-    let id = UUID()
-    var symbol : String
-    var fullname :String
+protocol BaseCurrencyFilterViewDelegate{
+    func didSelected(baseCurrency:String)
 }
-class BaseCurrencyFilterViewModel :ObservableObject{
-    @Published var symbols :[Symbol] = [
-    Symbol(symbol: "BRL", fullname: "Brazilian real"),
-    Symbol(symbol: "EUR", fullname: "Euro"),
-    Symbol(symbol: "JPY", fullname: "Japanese Yen"),
-    ]
-}
+
 struct BaseCurrencyFilterView: View {
-    @StateObject var viewmodel = BaseCurrencyFilterViewModel()
+    @StateObject var viewmodel = ViewModel()
     @State private var selectedFilter :String?
     @State private var searchText = ""
     
     @Environment(\.dismiss) var dismiss
+    var delegate : BaseCurrencyFilterViewDelegate?
     
-    var searchResult : [Symbol]{
+    var searchResult : [CurrencySymbolModel]{
         if searchText.isEmpty{
-            return viewmodel.symbols
+            return viewmodel.currencySymbols
         }else {
-            return viewmodel.symbols.filter{ text in
+            return viewmodel.currencySymbols.filter{ text in
                 text.symbol.contains(searchText.uppercased()) || text.fullname.uppercased().contains(searchText.uppercased())
             }
         }
@@ -39,6 +32,8 @@ struct BaseCurrencyFilterView: View {
     var body: some View {
         NavigationView{
             listCurrencyView
+        }.onAppear{
+            viewmodel.doFetchCurrencySymbols()
         }
     }
     private var listCurrencyView : some View{
@@ -54,6 +49,9 @@ struct BaseCurrencyFilterView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
+                    if let selectedFilter{
+                        delegate?.didSelected(baseCurrency:selectedFilter)
+                    }
                     dismiss()
                     
                 }, label: {

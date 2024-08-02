@@ -26,7 +26,7 @@ enum RatesRouter{
         case .fluctuation( let base, let symbols , let startDate, let endDate):
             url.append(queryItems: [URLQueryItem(name: "base", value: base),
                                     URLQueryItem(name:"symbols", value: symbols.joined(separator: ",")),
-                                    URLQueryItem(name: "start_ate", value: startDate),
+                                    URLQueryItem(name: "start_date", value: startDate),
                                     URLQueryItem(name: "end_date", value: endDate)
                                 ])
         case .timeSeries(let base, let symbols , let startDate, let endDate):

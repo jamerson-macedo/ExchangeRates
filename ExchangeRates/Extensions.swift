@@ -57,11 +57,14 @@ extension Date{
     init(form component : Calendar.Component,value:Int){
         self = Calendar.current.date(byAdding: component, value: -value, to: Date()) ?? Date()
     }
-    func toString(dateFormat :String) -> String{
+    func formatter(dateFormat :String) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "pt_BR_POSIX")
         dateFormatter.dateFormat = dateFormat
         return dateFormatter.string(from:self)
+    }
+    func toString(dateformater : String = "yyyy-MM-dd") ->String{
+        return formatter(dateFormat: dateformater)
     }
 }
 extension UINavigationController{

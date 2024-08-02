@@ -7,25 +7,23 @@
 
 import SwiftUI
 
-class CurrencySelectionFilterViewModel :ObservableObject{
-    @Published var symbols :[Symbol] = [
-        Symbol(symbol: "BRL", fullname: "Brazilian real"),
-        Symbol(symbol: "EUR", fullname: "Euro"),
-        Symbol(symbol: "JPY", fullname: "Japanese Yen"),
-    ]
+protocol MulticurrenciesfilterViewDelegate{
+    func didSelecteds(_ currencies :[String])
 }
 
 struct CurrencySelectionFilterView: View {
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""
-    @StateObject var viewmodel = CurrencySelectionFilterViewModel()
+    @StateObject var viewmodel = ViewModel()
     @State private var selection : [String] = []
     
-    var searchResult : [Symbol]{
+    var delegate : MulticurrenciesfilterViewDelegate?
+    
+    var searchResult : [CurrencySymbolModel]{
         if searchText.isEmpty{
-            return viewmodel.symbols
+            return viewmodel.CurrencySymbols
         }else {
-            return viewmodel.symbols.filter{ text in
+            return viewmodel.CurrencySymbols.filter{ text in
                 text.symbol.contains(searchText.uppercased()) || text.fullname.uppercased().contains(searchText.uppercased())
             }
         }
@@ -34,6 +32,8 @@ struct CurrencySelectionFilterView: View {
         NavigationView
         {
             listCurrencyView
+        }.onAppear{
+            viewmodel.doFetchCurrencySymbols()
         }
     }
     private var listCurrencyView : some View{
@@ -63,10 +63,11 @@ struct CurrencySelectionFilterView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button(action: {
+                    delegate?.didSelecteds(selection)
                     dismiss()
                     
                 }, label: {
-                    Text("OK").fontWeight(.bold)
+                    Text(selection.isEmpty ? "Cancelar" : "Ok").fontWeight(.bold)
                 })
             }
     }
