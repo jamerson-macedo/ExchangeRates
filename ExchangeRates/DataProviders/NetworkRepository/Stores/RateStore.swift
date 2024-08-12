@@ -8,7 +8,7 @@
 import Foundation
 protocol RateStoreProtocol{
     func fetchFluctuation(by base:String,from symbols :[String],startDate :String, endDate :String) async throws -> RateFluctuationObject
-    func fetchTimeseries(by base:String,from symbols :[String],startDate :String, endDate :String) async throws ->RatesHistoricalObject
+    func fetchTimeseries(by base:String,from symbols :String,startDate :String, endDate :String) async throws ->RatesHistoricalObject
 }
 
 
@@ -22,7 +22,7 @@ class RateStore :BaseStore, RateStoreProtocol {
         return rates
     }
     
-    func fetchTimeseries(by base: String, from symbols: [String], startDate: String, endDate: String) async throws -> RatesHistoricalObject {
+    func fetchTimeseries(by base: String, from symbols: String, startDate: String, endDate: String) async throws -> RatesHistoricalObject {
         guard let urlrequest = try RatesRouter.timeSeries(base: base, symbols: symbols, startDate: startDate, endDate: endDate).asUrlRequest() else {throw error}
         let (data,response) = try await URLSession.shared.data(for: urlrequest)
         guard let rates = try RateResult<RatesHistoricalObject>(data: data, response: response).rates

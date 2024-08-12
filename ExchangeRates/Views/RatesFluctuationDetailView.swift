@@ -7,44 +7,8 @@
 
 import SwiftUI
 import Charts
-
-
-
-class RateFluctuationViewModel : ObservableObject{
-    @Published var fluctuation : [RateFluctuationModel] = [RateFluctuationModel(symbol: "USD", change: 0.0008, changePct: 0.4175, endRate: 0.18857),
-                                                  RateFluctuationModel(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353)
-    ]
-    
-    @Published var chartComparations : [RateHistoricalModel] = [RateHistoricalModel(symbol: "USD", period: "2022-12-13".toDate(), endRate: 0.18857),RateHistoricalModel(symbol: "USD", period: "2023-01-03".toDate(), endRate: 0.18957),RateHistoricalModel(symbol: "USD", period: "2023-01-13".toDate(), endRate: 0.22857)]
-    
-    @Published var timeRange = TimeRangeEnum.today
-    var yAxisMin:Double{
-        let min = chartComparations.map{$0.endRate}.min() ?? 0.0
-        return (min - (min * 0.02))
-    }
-    var yAxisMax:Double{
-        let max = chartComparations.map{$0.endRate}.max() ?? 0.0
-        return (max - (max * 0.02))
-    }
-    var  hasRates:Bool{
-        return chartComparations.filter { $0.endRate > 0}.count > 0
-    }
-    func xAxislabelFormatSTyle(for date:Date)->String{
-        switch timeRange {
-        case .today:
-            return date.formatter(dateFormat: "HH:mm")
-        case .thisWeek, .thisMonth:
-            return date.formatter(dateFormat: "dd, MMM")
-        case .thisSemester:
-            return date.formatter(dateFormat: "MMM")
-        case .thisYear:
-            return date.formatter(dateFormat: "MMM, YYYY")
-        }
-    }
-    
-}
 struct RatesFluctuationDetailView: View {
-    @StateObject var viewmodel = RateFluctuationViewModel()
+    @StateObject var viewmodel = ViewModel()
     @State var baseCurrency : String
     @State var rateFluctuation : RateFluctuationModel
     
@@ -56,17 +20,21 @@ struct RatesFluctuationDetailView: View {
             comparationView
         }.padding(.leading,8)
             .padding(.trailing,8)
-        .navigationTitle("BRL a EUR")
+            .navigationTitle(viewmodel.title)
+            .onAppear{
+                viewmodel.startStateView(baseCurrency: baseCurrency, rateFluctuation: rateFluctuation, timeRange: .today)
+            }
+    
     }
     private var valuesView : some View{
         HStack(alignment:.center){
-            Text(rateFluctuation.endRate.formater(decimalPlaces: 4)).font(.system(size: 28,weight: .bold))
-            Text(rateFluctuation.changePct.toPercentage(with: true))
+            Text(viewmodel.endRate.formater(decimalPlaces: 4)).font(.system(size: 28,weight: .bold))
+            Text(viewmodel.changePct.toPercentage(with: true))
                 .font(.system(size: 18,weight: .semibold))
-                .foregroundStyle(rateFluctuation.changePct.color)
-                .background(rateFluctuation.changePct.color).opacity(0.2)
-            Text(rateFluctuation.change.formater(decimalPlaces: 4,with: true)).font(.system(size: 18,weight: .semibold))
-                .foregroundStyle(rateFluctuation.change.color)
+                .foregroundStyle(viewmodel.changePct.color)
+                .background(viewmodel.changePct.color).opacity(0.2)
+            Text(viewmodel.changeDescription).font(.system(size: 18,weight: .semibold))
+                .foregroundStyle(viewmodel.change.color)
             Spacer()
         }.padding(.all,8)
     }
@@ -81,49 +49,51 @@ struct RatesFluctuationDetailView: View {
     private var periodFilterView:some View{
         HStack(spacing:16){
             Button(action: {
-                print("1 Dia")
+                viewmodel.doFetchData(from: .today)
             }, label: {
                 Text("1 Dia").font(.system(size: 14,weight: .bold))
-                    .foregroundColor(.blue).underline()
+                    .foregroundColor(viewmodel.timeRange == .today ? .blue : .gray).underline(viewmodel.timeRange == .today)
                 
             }
             )
             Button(action: {
-                print("7 Dias")
+                viewmodel.doFetchData(from: .thisWeek)
+
             }, label: {
                 Text("7 Dias").font(.system(size: 14,weight: .bold))
-                    .foregroundColor(.gray)
-                
+                    .foregroundColor(viewmodel.timeRange == .thisWeek ? .blue : .gray)
+                    .underline(viewmodel.timeRange == .thisWeek)
             }
             )
             Button(action: {
-                print("1 mes")
+                viewmodel.doFetchData(from: .thisMonth)
+
             }, label: {
                 Text("1 Mês").font(.system(size: 14,weight: .bold))
-                    .foregroundColor(.gray)
+                    .foregroundColor(viewmodel.timeRange == .thisMonth ? .blue : .gray).underline(viewmodel.timeRange == .thisMonth)
                 
             }
             )
             Button(action: {
-                print("6 mes")
+                viewmodel.doFetchData(from: .thisSemester)
             }, label: {
                 Text("6 Meses").font(.system(size: 14,weight: .bold))
-                    .foregroundColor(.gray)
+                    .foregroundColor(viewmodel.timeRange == .thisSemester ? .blue : .gray).underline(viewmodel.timeRange == .thisSemester)
                 
             }
             )
             Button(action: {
-                print("1 ano")
+                viewmodel.doFetchData(from: .thisYear)
             }, label: {
                 Text("1 Ano").font(.system(size: 14,weight: .bold))
-                    .foregroundColor(.gray)
-                
+                    .foregroundColor(viewmodel.timeRange == .thisYear ? .blue : .gray)
+                    .underline(viewmodel.timeRange == .thisYear)
             }
             )
         }
     }
     private var lineChartView : some View{
-        Chart(viewmodel.chartComparations){ item in
+        Chart(viewmodel.ratesHistorical){ item in
             LineMark(x: .value("Time", item.period), y: .value("Rates", item.endRate)).interpolationMethod(.catmullRom)
             
             if !viewmodel.hasRates{
@@ -139,7 +109,7 @@ struct RatesFluctuationDetailView: View {
             }
         }
         .chartXAxis{
-            AxisMarks(preset: .aligned){ date in
+            AxisMarks(preset: .aligned,values: .stride(by: viewmodel.xAxisStride,count: viewmodel.xAxisStrideCount)){ date in
                 AxisGridLine()
                 AxisValueLabel(viewmodel.xAxislabelFormatSTyle(for: date.as(Date.self) ?? Date()))
             }
@@ -168,12 +138,13 @@ struct RatesFluctuationDetailView: View {
         }).fullScreenCover(isPresented: $isPresentedCurrencyFilter){
             BaseCurrencyFilterView()
         }
+        .opacity(viewmodel.ratesFluctuation.count == 0 ? 0 : 1)
         
     }
     private var comparationScrollView: some View{
         ScrollView(.horizontal,showsIndicators: false){
             LazyHGrid(rows: [GridItem(.flexible())],alignment: .center){
-                ForEach(viewmodel.fluctuation){ fluctuation in
+                ForEach(viewmodel.ratesFluctuation){ fluctuation in
                     Button{
                         print()
                     }label: {

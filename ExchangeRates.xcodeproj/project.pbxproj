@@ -36,6 +36,7 @@
 		CFDA0EF02C5CE82100977B72 /* BaseCurrencyFilterViewModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EEF2C5CE82100977B72 /* BaseCurrencyFilterViewModel .swift */; };
 		CFDA0EF22C5CEC6100977B72 /* MultiCurrenciesFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EF12C5CEC6100977B72 /* MultiCurrenciesFilterViewModel.swift */; };
 		CFDA0EF42C5CEF9700977B72 /* RatesFluctuationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EF32C5CEF9700977B72 /* RatesFluctuationViewModel.swift */; };
+		CFDA0EF62C64188C00977B72 /* RatesFluctuationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDA0EF52C64188C00977B72 /* RatesFluctuationDetailViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,7 @@
 		CFDA0EEF2C5CE82100977B72 /* BaseCurrencyFilterViewModel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BaseCurrencyFilterViewModel .swift"; sourceTree = "<group>"; };
 		CFDA0EF12C5CEC6100977B72 /* MultiCurrenciesFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCurrenciesFilterViewModel.swift; sourceTree = "<group>"; };
 		CFDA0EF32C5CEF9700977B72 /* RatesFluctuationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesFluctuationViewModel.swift; sourceTree = "<group>"; };
+		CFDA0EF52C64188C00977B72 /* RatesFluctuationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesFluctuationDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 				CFDA0EEF2C5CE82100977B72 /* BaseCurrencyFilterViewModel .swift */,
 				CFDA0EF12C5CEC6100977B72 /* MultiCurrenciesFilterViewModel.swift */,
 				CFDA0EF32C5CEF9700977B72 /* RatesFluctuationViewModel.swift */,
+				CFDA0EF52C64188C00977B72 /* RatesFluctuationDetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				CFDA0EEB2C5CE74400977B72 /* CurrencySymbolModel.swift in Sources */,
 				CFDA0EF42C5CEF9700977B72 /* RatesFluctuationViewModel.swift in Sources */,
 				CFDA0EC82C590C9100977B72 /* CurrentSymbolsObject.swift in Sources */,
+				CFDA0EF62C64188C00977B72 /* RatesFluctuationDetailViewModel.swift in Sources */,
 				CFDA0ED42C59183000977B72 /* RatesFluctuactionDataProvider.swift in Sources */,
 				CFDA0EE52C5C31DD00977B72 /* BaseCurrencyFilterView.swift in Sources */,
 				CFDA0ED62C59195F00977B72 /* RatesHistoricalDataProvider.swift in Sources */,
