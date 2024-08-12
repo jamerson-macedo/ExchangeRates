@@ -19,7 +19,7 @@ enum RatesRouter{
             return RateApi.timeseries
         }
     }
-    func asUrlRequest() throws ->URLRequest?{
+    func asUrlRequest() ->URLRequest?{
         guard var url = URL(string: RateApi.baseUrl) else {return nil}
         
         switch self{

@@ -6,25 +6,36 @@
 //
 
 import Foundation
-protocol CurrencySymbolsDataProviderDelegate : DataProviderManagerDelegate{
-    func success(model:[CurrencySymbolModel])
+import Combine
+
+protocol CurrencySymbolsDataProviderProtocol{
+    func fetchSymbols()-> AnyPublisher<[CurrencySymbolModel],Error>
 }
-class CurrencySymbolsDataProvider : DataProviderManager<CurrencySymbolsDataProviderDelegate, [CurrencySymbolModel]>{
+class CurrencySymbolsDataProvider : CurrencySymbolsDataProviderProtocol{
+    
     private let currencyStore : CurrencyStore
+    
     init(currencyStore: CurrencyStore = CurrencyStore()) {
         self.currencyStore = currencyStore
     }
-    func fetchSymbols(){
-        Task.init{
-            do {
-                let model = try await currencyStore.fetchSymbols()
-                delegate?.success(model: model.map({(key,value) -> CurrencySymbolModel in
+    func fetchSymbols() -> AnyPublisher<[CurrencySymbolModel],Error> {
+        return Future{ promisse in
+            self.currencyStore.fetchSymbols { result, error in
+                DispatchQueue.main.async {
+                    if let error {
+                        return promisse(.failure(error))
+                    }
+                    guard let symbols = result?.symbols else {
+                        return
+                    }
+                    let currencySymbols = symbols.map ({(key,value)-> CurrencySymbolModel in
                     return CurrencySymbolModel(symbol: key, fullname: value)
-                    
-                }))
-            }catch{
-                delegate?.errorData(delegate, error: error)
+                    })
+                    return promisse(.success(currencySymbols))
+                }
             }
-        }
+            
+        }.eraseToAnyPublisher()
     }
+   
 }

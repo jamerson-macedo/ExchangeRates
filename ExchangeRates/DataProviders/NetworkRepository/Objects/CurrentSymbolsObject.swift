@@ -7,4 +7,9 @@
 
 import Foundation
 
-typealias CurrentSymbolsObject = [String :String]
+struct CurrentSymbolsObject :Codable{
+    var base : String?
+    var success:Bool = false
+    var symbols : SymbolObject?
+}
+typealias SymbolObject = [String:String]
