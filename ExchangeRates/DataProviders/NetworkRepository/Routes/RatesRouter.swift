@@ -19,6 +19,7 @@ enum RatesRouter{
             return RateApi.timeseries
         }
     }
+    // retorna a URL MONTADA
     func asUrlRequest() ->URLRequest?{
         guard var url = URL(string: RateApi.baseUrl) else {return nil}
         

@@ -7,25 +7,45 @@
 
 import Foundation
 import SwiftUI
+import Combine
 extension CurrencySelectionFilterView{
-    @MainActor class ViewModel:ObservableObject, CurrencySymbolsDataProviderDelegate{
-        @Published var CurrencySymbols = [CurrencySymbolModel]()
+    @MainActor class ViewModel:ObservableObject{
+        enum ViewState {
+            case start
+            case loading
+            case success
+            case failure
+        }
+        
+        @Published var currencySymbols = [CurrencySymbolModel]()
+        @Published var searchResults = [CurrencySymbolModel]()
+        
+        private var cancelables = Set<AnyCancellable>()
+        
         private let dataProvider : CurrencySymbolsDataProvider?
+        
+        @Published var viewState :ViewState = .start
+        
+        
         init(dataProvider: CurrencySymbolsDataProvider = CurrencySymbolsDataProvider()) {
             self.dataProvider = dataProvider
-            self.dataProvider?.delegate = self
         }
         func doFetchCurrencySymbols(){
-            dataProvider?.fetchSymbols()
-        }
-        nonisolated func success(model: [CurrencySymbolModel]) {
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.CurrencySymbols = model.sorted{$0.symbol < $1.symbol}
+            viewState = .loading
+            dataProvider?.fetchSymbols().sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    self.viewState = .success
+                case .failure(_):
+                    self.viewState = .failure
                 }
-            }
-         }
-         
-        
+            }, receiveValue: { currencies in
+                withAnimation {
+                    self.currencySymbols = currencies.sorted{$0.symbol < $1.symbol}
+                    self.searchResults = self.currencySymbols
+                }
+            }).store(in: &cancelables)
+        }
+    
     }
 }
