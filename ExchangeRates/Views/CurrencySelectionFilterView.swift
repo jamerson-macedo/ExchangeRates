@@ -19,25 +19,24 @@ struct CurrencySelectionFilterView: View {
     
     var delegate : MulticurrenciesfilterViewDelegate?
     
-    var searchResult : [CurrencySymbolModel]{
-        if searchText.isEmpty{
-            return viewmodel.CurrencySymbols
-        }else {
-            return viewmodel.CurrencySymbols.filter{ text in
-                text.symbol.contains(searchText.uppercased()) || text.fullname.uppercased().contains(searchText.uppercased())
-            }
-        }
-    }
+   
     var body: some View {
-        NavigationView
-        {
-            listCurrencyView
+        NavigationView {
+            VStack{
+                if case .loading = viewmodel.viewState{
+                    ProgressView().scaleEffect(2.2,anchor: .center)
+                }else if case .success = viewmodel.viewState{
+                    listCurrencyView
+                }else if case .failure = viewmodel.viewState{
+                    erroView
+                }
+            }
         }.onAppear{
             viewmodel.doFetchCurrencySymbols()
         }
     }
     private var listCurrencyView : some View{
-        List(searchResult,id: \.symbol){ item in
+        List(viewmodel.searchResults,id: \.symbol){ item in
             Button{
                 if selection.contains(item.symbol){
                     selection.removeAll { value in
@@ -58,7 +57,15 @@ struct CurrencySelectionFilterView: View {
                 }
             }.foregroundColor(.primary)
             
-        }.searchable(text: $searchText)
+        }.searchable(text: $searchText,prompt: "Buscar moeda base")
+            .onChange(of: searchText){ searchText in
+                if searchText.isEmpty{
+                    viewmodel.searchResults = viewmodel.currencySymbols
+                }else {
+                    viewmodel.searchResults = viewmodel.currencySymbols.filter({ $0.symbol.contains(searchText.uppercased()) || $0.fullname.uppercased().contains(searchText.uppercased())
+                    })
+                }
+            }
             .navigationTitle("Filtrar Moedas")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
@@ -70,6 +77,20 @@ struct CurrencySelectionFilterView: View {
                     Text(selection.isEmpty ? "Cancelar" : "Ok").fontWeight(.bold)
                 })
             }
+    }
+    private var erroView : some View{
+        VStack(alignment: .center){
+            Spacer()
+            Image(systemName: "wifi.exclamationmark").resizable().frame(width: 60,height: 44).padding(.bottom,4)
+            Text("Ocorreu um erro na busca dos Simbolos das Moedas!!").font(.headline.bold()).multilineTextAlignment(.center)
+            
+            Button{
+                viewmodel.doFetchCurrencySymbols()
+            }label: {
+                Text("Tentar novamente?")
+            }.padding(.top,4)
+            Spacer()
+        }.padding()
     }
 }
 

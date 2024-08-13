@@ -37,7 +37,8 @@ extension RatesFluctuationDetailView {
         
         
         var title : String {
-            return "\(baseCurrency ?? "") a \(symbol)"
+            guard let baseCurrency = baseCurrency, let fromCurrency = fromCurrency else {return ""}
+            return "\(baseCurrency) a \(fromCurrency)"
         }
         var symbol : String{
             return rateFluctuation?.symbol ?? ""
@@ -165,11 +166,11 @@ extension RatesFluctuationDetailView {
             if let baseCurrency {
                 let startDate = timeRange.date.toString()
                 let endDate = Date().toString()
-                fluctuationDataProvider?.fetchFluctuation(by: baseCurrency, from: [], startDate: startDate, endDate: endDate).sink(receiveCompletion: { completion in
+                fluctuationDataProvider?.fetchFluctuation(by: baseCurrency, from: [], startDate: startDate, endDate: endDate).receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished:
                         self.currencyState = .success
-                    case .failure(let failure):
+                    case .failure(_):
                        print("falhou")
                     }
                 }, receiveValue: { rates in
@@ -186,11 +187,11 @@ extension RatesFluctuationDetailView {
                 let startDate = timeRange.date.toString()
                 let endDate = Date().toString()
                 
-                historicalDataProvider?.fetchTimeseries(by: baseCurrency, from: currency, startDate: startDate, endDate: endDate).sink(receiveCompletion: { completion in
+                historicalDataProvider?.fetchTimeseries(by: baseCurrency, from: currency, startDate: startDate, endDate: endDate).receive(on: DispatchQueue.main) .sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished:
                         self.currencyState = .success
-                    case .failure(let failure):
+                    case .failure(_):
                         print("falhou")
                     }
                 }, receiveValue: { rates in

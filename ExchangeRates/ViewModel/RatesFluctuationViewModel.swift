@@ -14,7 +14,7 @@ extension RatesFluctuationView {
             case start
             case loading
             case success
-            case failure
+            case failure(String)
         }
         // lista com dados
         @Published var ratesFluctuation = [RateFluctuationModel]()
@@ -42,13 +42,13 @@ extension RatesFluctuationView {
             }
             let startDate = timeRange.date.toString()
             let endDatte = Date().toString()
-            dataProvider?.fetchFluctuation(by: baseCurrency, from: currencies, startDate: startDate, endDate: endDatte)
+            dataProvider?.fetchFluctuation(by: baseCurrency, from: currencies, startDate: startDate, endDate: endDatte).receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
                     switch completion {
                     case .finished:
                         self.currentState = .success
-                    case .failure(_):
-                        self.currentState = .failure
+                    case .failure(let message):
+                        self.currentState = .failure(message.localizedDescription)
                     }
                 }, receiveValue: { rates in
                     self.ratesFluctuation = rates.sorted{$0.symbol < $1.symbol}

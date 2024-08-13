@@ -32,7 +32,7 @@ extension CurrencySelectionFilterView{
         }
         func doFetchCurrencySymbols(){
             viewState = .loading
-            dataProvider?.fetchSymbols().sink(receiveCompletion: { completion in
+            dataProvider?.fetchSymbols().receive(on: DispatchQueue.main).sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
                     self.viewState = .success

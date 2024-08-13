@@ -10,7 +10,7 @@ import Charts
 struct RatesFluctuationDetailView: View {
     @StateObject var viewmodel = ViewModel()
     @State var baseCurrency : String
-    @State var rateFluctuation : RateFluctuationModel
+    @State var fromCurrency : String
     
     @State private var isPresentedCurrencyFilter = false
     var body: some View {
@@ -22,18 +22,18 @@ struct RatesFluctuationDetailView: View {
             .padding(.trailing,8)
             .navigationTitle(viewmodel.title)
             .onAppear{
-                viewmodel.startStateView(baseCurrency: baseCurrency, rateFluctuation: rateFluctuation, timeRange: .today)
+                viewmodel.startStateView(baseCurrency: baseCurrency, fromCurrency: fromCurrency, timeRange: .today)
             }
     
     }
     private var valuesView : some View{
         HStack(alignment:.center){
-            Text(viewmodel.endRate.formater(decimalPlaces: 4)).font(.system(size: 28,weight: .bold))
+            Text(viewmodel.endRate.formater(decimalPlaces: 4)).font(.system(size: 22,weight: .bold))
             Text(viewmodel.changePct.toPercentage(with: true))
-                .font(.system(size: 18,weight: .semibold))
+                .font(.system(size: 16,weight: .semibold))
                 .foregroundStyle(viewmodel.changePct.color)
                 .background(viewmodel.changePct.color).opacity(0.2)
-            Text(viewmodel.changeDescription).font(.system(size: 18,weight: .semibold))
+            Text(viewmodel.changeDescription).font(.system(size: 16,weight: .semibold))
                 .foregroundStyle(viewmodel.change.color)
             Spacer()
         }.padding(.all,8)
@@ -177,5 +177,5 @@ extension RatesFluctuationDetailView :BaseCurrencyFilterViewDelegate{
 }
 
 #Preview {
-    RatesFluctuationDetailView(baseCurrency: "BRL", rateFluctuation: RateFluctuationModel(symbol: "EUR", change: -0.0003, changePct: 0.1651, endRate: 0.181353))
+    RatesFluctuationDetailView(baseCurrency: "BRL", fromCurrency: "USD")
 }

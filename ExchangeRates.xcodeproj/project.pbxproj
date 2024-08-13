@@ -99,6 +99,7 @@
 		CFDA0EA82C57C87F00977B72 /* ExchangeRates */ = {
 			isa = PBXGroup;
 			children = (
+				CFDA0EF92C6C1FDA00977B72 /* fotos */,
 				CFDA0EEE2C5CE7CC00977B72 /* ViewModel */,
 				CFDA0EE12C5A60DA00977B72 /* Models */,
 				CFDA0EDA2C5A4D4400977B72 /* Views */,
@@ -225,6 +226,13 @@
 				CFDA0EF52C64188C00977B72 /* RatesFluctuationDetailViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CFDA0EF92C6C1FDA00977B72 /* fotos */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = fotos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -459,6 +467,7 @@
 				DEVELOPMENT_TEAM = L5U287N3KD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Taxa de Câmbio";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -494,6 +503,7 @@
 				DEVELOPMENT_TEAM = L5U287N3KD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Taxa de Câmbio";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

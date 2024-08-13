@@ -16,26 +16,34 @@ struct RatesFluctuationView: View {
     @State private var isPresented = false
     @State private var filtersPresented = false
     @State private var  viewDidLoad = true
-    var searchResult : [RateFluctuationModel]{
-        if searchText.isEmpty{
-            return viewmodel.ratesFluctuation
-        }else {
-            return viewmodel.ratesFluctuation.filter{ element in
-                element.symbol.contains(searchText.uppercased()) ||
-                element.change.formater(decimalPlaces:4).contains(searchText.uppercased()) ||
-                element.changePct.toPercentage().contains(searchText.uppercased()) ||
-                element.endRate.formater(decimalPlaces: 2).contains(searchText.uppercased())
-            }
-        }
-    }
+ 
     var body: some View {
         NavigationView{
             VStack{
-                CurrencyTimeFilterView
-                ratesFluctuationListView
-                
+                if case .loading = viewmodel.currentState{
+                    ProgressView().scaleEffect(2.2,anchor: .center)
+                }else if case .success = viewmodel.currentState{
+                    CurrencyTimeFilterView
+                    ratesFluctuationListView
+                }else if case .failure = viewmodel.currentState{
+                    erroView
+                }
             }
-                        .searchable(text: $searchText)
+            .searchable(text: $searchText,prompt: "Procurar Moeda")
+            .onChange(of: searchText){ searchText in
+                    if searchText.isEmpty{
+                        viewmodel.searchResults = viewmodel.ratesFluctuation
+                    }else {
+                        viewmodel.searchResults = viewmodel.ratesFluctuation.filter{ element in
+                            element.symbol.contains(searchText.uppercased()) ||
+                            element.change.formater(decimalPlaces:6).contains(searchText) ||
+                            element.changePct.formater(decimalPlaces: 6) .contains(searchText) ||
+                            element.endRate.formater(decimalPlaces: 6).contains(searchText)
+                        }
+                    }
+                }
+            
+        
             .navigationTitle("Conversão de moedas")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
@@ -118,8 +126,8 @@ struct RatesFluctuationView: View {
             .padding(.bottom,16)
     }
     private var ratesFluctuationListView : some View{
-        List(searchResult){ fluctuation in
-            NavigationLink (destination: RatesFluctuationDetailView(baseCurrency: viewmodel.baseCurrency, rateFluctuation: fluctuation)){
+        List(viewmodel.searchResults){ fluctuation in
+            NavigationLink (destination: RatesFluctuationDetailView(baseCurrency: viewmodel.baseCurrency,fromCurrency: fluctuation.symbol)){
                 VStack{
                     HStack(alignment:.center,spacing: 8){
                         Text("\(fluctuation.symbol) / \(viewmodel.baseCurrency)").font(.system(size: 14,weight: .medium))
@@ -140,7 +148,20 @@ struct RatesFluctuationView: View {
             
         }.listStyle(.plain)
     }
-    
+    private var erroView : some View{
+        VStack(alignment: .center){
+            Spacer()
+            Image(systemName: "wifi.exclamationmark").resizable().frame(width: 60,height: 44).padding(.bottom,4)
+            Text("Ocorreu um erro na busca das flutuações de taxas!").font(.headline.bold()).multilineTextAlignment(.center)
+            
+            Button{
+                viewmodel.doFetchRatesFluctuation(timeRange: .today)
+            }label: {
+                Text("Tentar novamente?")
+            }.padding(.top,4)
+            Spacer()
+        }.padding()
+    }
     
 }
 extension RatesFluctuationView : BaseCurrencyFilterViewDelegate{
