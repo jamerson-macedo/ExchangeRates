@@ -1,5 +1,5 @@
 # ExchangeApp
-Aplicativo do curso do thiago aguiar sobre gerenciamento de hábitos
+Aplicativo que lista e gerencia Moedas consumindo a Api https://exchangeratesapi.io/
 
 # Funcionalidades
 - Listagem de criptomoedas
